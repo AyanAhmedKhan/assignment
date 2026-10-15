@@ -1,0 +1,50 @@
+@baseUrl = http://localhost:8080
+@employeeId = 1
+
+### Create an employee. Use the returned ID below.
+POST {{baseUrl}}/api/employees
+Content-Type: application/json
+
+{
+  "fullName": "Ananya Rao",
+  "email": "ananya.rao@example.com",
+  "phoneNumber": "+91 98765 43210",
+  "department": "ENGINEERING",
+  "designation": "Backend Engineer",
+  "dateOfJoining": "2024-07-01",
+  "salary": 650000.50,
+  "status": "ACTIVE"
+}
+
+### List with search, combined filters and pagination
+GET {{baseUrl}}/api/employees?search=ananya&department=ENGINEERING&status=ACTIVE&page=0&size=10&sortBy=fullName&direction=asc
+
+### Get one employee
+GET {{baseUrl}}/api/employees/{{employeeId}}
+
+### Update all editable fields
+PUT {{baseUrl}}/api/employees/{{employeeId}}
+Content-Type: application/json
+
+{
+  "fullName": "Ananya Rao",
+  "email": "ananya.rao@example.com",
+  "phoneNumber": "+91 98765 43210",
+  "department": "ENGINEERING",
+  "designation": "Software Engineer",
+  "dateOfJoining": "2024-07-01",
+  "salary": 700000,
+  "status": "ACTIVE"
+}
+
+### Directory-wide totals
+GET {{baseUrl}}/api/employees/summary
+
+### Delete the example employee permanently
+DELETE {{baseUrl}}/api/employees/{{employeeId}}
+
+### Invalid page size: expect 400
+GET {{baseUrl}}/api/employees?size=101
+
+### Missing employee: expect 404
+GET {{baseUrl}}/api/employees/9223372036854775807

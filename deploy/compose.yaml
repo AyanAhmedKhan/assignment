@@ -1,0 +1,104 @@
+name: klodspot-assignment
+services:
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: employees
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_ADMIN_PASSWORD:?Set DB_ADMIN_PASSWORD in deploy/.env}
+      APP_DB_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in deploy/.env}
+    volumes:
+      - employee_data:/var/lib/postgresql
+      - ./initdb.sh:/docker-entrypoint-initdb.d/10-app-user.sh:ro
+    networks:
+      - database
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d employees']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+    mem_limit: 512m
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: '3'
+  app:
+    image: klodspot-assignment:${IMAGE_TAG:?Set IMAGE_TAG in deploy/.env}
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    environment:
+      SPRING_PROFILES_ACTIVE: cloud,demo
+      PGHOST: db
+      PGDATABASE: employees
+      PGUSER: klodspot
+      PGPASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Set ADMIN_PASSWORD}
+      JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=70 -XX:+ExitOnOutOfMemoryError
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - database
+      - proxy
+    expose:
+      - '8080'
+    restart: unless-stopped
+    mem_limit: 768m
+    pids_limit: 150
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ['CMD', 'curl', '-fsS', 'http://localhost:8080/actuator/health']
+      interval: 15s
+      timeout: 5s
+      start_period: 90s
+      retries: 5
+    labels:
+      traefik.enable: 'true'
+      traefik.docker.network: ${PROXY_NETWORK:-root_default}
+      traefik.http.routers.klodspot.rule: Host(`${APP_HOST:?Set APP_HOST}`)
+      traefik.http.routers.klodspot.entrypoints: websecure
+      traefik.http.routers.klodspot.tls: 'true'
+      traefik.http.routers.klodspot.tls.certresolver: ${TLS_RESOLVER:-mytlschallenge}
+      traefik.http.routers.klodspot.service: klodspot
+      traefik.http.services.klodspot.loadbalancer.server.port: '8080'
+      traefik.http.routers.klodspot-login.rule: Host(`${APP_HOST}`) && Path(`/login`)
+      traefik.http.routers.klodspot-login.entrypoints: websecure
+      traefik.http.routers.klodspot-login.tls: 'true'
+      traefik.http.routers.klodspot-login.tls.certresolver: ${TLS_RESOLVER:-mytlschallenge}
+      traefik.http.routers.klodspot-login.service: klodspot
+      traefik.http.routers.klodspot-login.middlewares: klodspot-login-limit
+      traefik.http.middlewares.klodspot-login-limit.ratelimit.average: '5'
+      traefik.http.middlewares.klodspot-login-limit.ratelimit.period: 1m
+      traefik.http.middlewares.klodspot-login-limit.ratelimit.burst: '5'
+      traefik.http.routers.klodspot-register.rule: Host(`${APP_HOST}`) && Path(`/api/auth/register`)
+      traefik.http.routers.klodspot-register.entrypoints: websecure
+      traefik.http.routers.klodspot-register.tls: 'true'
+      traefik.http.routers.klodspot-register.tls.certresolver: ${TLS_RESOLVER:-mytlschallenge}
+      traefik.http.routers.klodspot-register.service: klodspot
+      traefik.http.routers.klodspot-register.middlewares: klodspot-register-limit
+      traefik.http.middlewares.klodspot-register-limit.ratelimit.average: '3'
+      traefik.http.middlewares.klodspot-register-limit.ratelimit.period: 1m
+      traefik.http.middlewares.klodspot-register-limit.ratelimit.burst: '3'
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: '3'
+networks:
+  database:
+    internal: true
+  proxy:
+    external: true
+    name: ${PROXY_NETWORK:-root_default}
+volumes:
+  employee_data:

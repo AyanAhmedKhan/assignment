@@ -1,0 +1,10 @@
+{
+  "fullName": "Ananya Rao",
+  "email": "ananya.rao@example.com",
+  "phoneNumber": "+91 98765 43210",
+  "department": "ENGINEERING",
+  "designation": "Backend Engineer",
+  "dateOfJoining": "2024-07-01",
+  "salary": 650000.50,
+  "status": "ACTIVE"
+}

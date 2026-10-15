@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create an account | Klodspot Assignment</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <script type="module" src="/js/register.js"></script>
+  </head>
+  <body class="login-page">
+    <main class="login-card registration-card">
+      <div class="login-brand"><span class="brand-mark">k</span>Klodspot Assignment</div>
+      <p class="eyebrow">YOUR OWN WORKSPACE</p>
+      <h1>Create an account<span>.</span></h1>
+      <p class="subtitle">Start with a private employee directory, ready for your team.</p>
+      <p id="registration-message" class="login-message" role="alert" hidden></p>
+      <form id="registration-form" novalidate>
+        <div class="form-grid">
+          <label class="span-two"
+            ><span id="register-label-fullName">Full name</span
+            ><input
+              aria-labelledby="register-label-fullName"
+              name="fullName"
+              autocomplete="name"
+              required
+              maxlength="120"
+              aria-describedby="error-fullName"
+            />
+            <span class="field-error" id="error-fullName"></span>
+          </label>
+          <label class="span-two"
+            ><span id="register-label-email">Email address</span
+            ><input
+              aria-labelledby="register-label-email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+              maxlength="254"
+              aria-describedby="error-email"
+            />
+            <span class="field-error" id="error-email"></span>
+          </label>
+          <label class="span-two"
+            ><span id="register-label-password">Password</span
+            ><input
+              aria-labelledby="register-label-password"
+              name="password"
+              type="password"
+              autocomplete="new-password"
+              required
+              minlength="12"
+              maxlength="64"
+              aria-describedby="password-help error-password"
+            />
+            <span class="input-help" id="password-help"
+              >Use 12 to 64 characters. A few unrelated words work well.</span
+            >
+            <span class="field-error" id="error-password"></span>
+          </label>
+          <label class="span-two"
+            ><span id="register-label-confirmPassword">Confirm password</span
+            ><input
+              aria-labelledby="register-label-confirmPassword"
+              name="confirmPassword"
+              type="password"
+              autocomplete="new-password"
+              required
+              maxlength="64"
+              aria-describedby="error-confirmPassword"
+            />
+            <span class="field-error" id="error-confirmPassword"></span>
+          </label>
+        </div>
+        <button class="button primary" id="create-account" disabled>Create account</button>
+      </form>
+      <noscript><p class="inline-error">Enable JavaScript to create an account.</p></noscript>
+      <p class="auth-link">Already have an account? <a href="/login.html">Sign in</a></p>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign in | Klodspot Assignment</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <script type="module" src="/js/login.js"></script>
+  </head>
+  <body class="login-page">
+    <main class="login-card">
+      <div class="login-brand"><span class="brand-mark">k</span>Klodspot Assignment</div>
+      <p class="eyebrow">EMPLOYEE WORKSPACE</p>
+      <h1>Welcome back<span>.</span></h1>
+      <p class="subtitle">Sign in to manage your employee directory.</p>
+      <p id="login-message" class="login-message" role="status" hidden></p>
+      <form action="/login" method="post" id="login-form">
+        <div class="form-grid">
+          <label class="span-two"
+            >Email or username
+            <input name="username" autocomplete="username" required maxlength="254" />
+          </label>
+          <label class="span-two"
+            >Password
+            <input type="password" name="password" autocomplete="current-password" required />
+          </label>
+        </div>
+        <input type="hidden" id="csrf-token" />
+        <button class="button primary" id="sign-in" disabled>Sign in</button>
+      </form>
+      <noscript
+        ><p class="inline-error">Enable JavaScript to sign in and use the directory.</p></noscript
+      >
+      <p class="auth-link">New here? <a href="/register.html">Create an account</a></p>
+      <section class="demo-accounts" id="demo-accounts" aria-labelledby="demo-heading" hidden>
+        <h2 id="demo-heading">Take a look around</h2>
+        <p>Try a sample directory before creating your own account.</p>
+        <div class="demo-buttons">
+          <button type="button" class="button secondary" data-demo-user="demo">Demo editor</button>
+          <button type="button" class="button secondary" data-demo-user="viewer">
+            Demo viewer
+          </button>
+        </div>
+        <p class="demo-help">
+          Editor can make changes. Viewer is read-only. Both use public sample data.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Manage employee records, contact details and employment information."
+    />
+    <title>Klodspot Assignment | Employee directory</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%232d5be3'/%3E%3Ctext x='20' y='29' text-anchor='middle' font-family='Arial' font-size='30' fill='white'%3Ek%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <script type="module" src="/js/app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <aside class="sidebar">
+      <a class="brand" href="#employees" aria-label="Klodspot Assignment home">
+        <span class="brand-mark">k</span
+        ><span class="brand-name">Klodspot<small>Assignment</small></span>
+      </a>
+      <div class="workspace">
+        <span class="workspace-icon">K</span>
+        <div>
+          <strong id="workspace-name">Your workspace</strong><small>Employee management</small>
+        </div>
+      </div>
+      <p class="nav-label">WORKSPACE</p>
+      <nav aria-label="Main navigation">
+        <a class="nav-link selected" href="#employees"
+          ><span data-icon="users"></span>Employee directory</a
+        >
+      </nav>
+      <div class="sidebar-bottom">
+        <a class="nav-link" href="/swagger-ui.html" target="_blank" rel="noopener"
+          ><span data-icon="code"></span>API documentation<span data-icon="external"></span
+        ></a>
+        <div class="sidebar-note"><span class="small-dot"></span> A little more organized.</div>
+      </div>
+    </aside>
+    <div class="shell">
+      <header class="topbar">
+        <div>
+          <span class="muted">Workspace</span><span class="slash">/</span><strong>Klodspot</strong>
+        </div>
+        <div class="session-actions">
+          <span class="workspace-label"><span class="small-dot"></span>Employee management</span>
+          <button class="button" id="sign-out" hidden>Sign out</button>
+        </div>
+      </header>
+      <main id="main" tabindex="-1">
+        <p id="account-notice" class="account-notice" role="status" hidden></p>
+        <section id="directory" aria-labelledby="directory-title">
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow">YOUR TEAM, IN ONE PLACE</p>
+              <h1 id="directory-title">Employee directory<span>.</span></h1>
+              <p class="subtitle">A clear view of the people behind your work.</p>
+            </div>
+            <button class="button primary" id="add-employee">
+              <span data-icon="plus"></span>Add employee
+            </button>
+          </div>
+          <div class="stats" aria-label="Totals across all employees">
+            <article class="stat">
+              <span class="stat-icon blue" data-icon="users"></span>
+              <div>
+                <p>Total employees</p>
+                <strong id="stat-total">â€”</strong>
+              </div>
+              <span class="stat-caption">Across your workspace</span>
+            </article>
+            <article class="stat">
+              <span class="stat-icon green" data-icon="check"></span>
+              <div>
+                <p>Active employees</p>
+                <strong id="stat-active">â€”</strong>
+              </div>
+              <span class="stat-caption"><span class="small-dot"></span>Currently on the team</span>
+            </article>
+            <article class="stat">
+              <span class="stat-icon amber" data-icon="pause"></span>
+              <div>
+                <p>Inactive employees</p>
+                <strong id="stat-inactive">â€”</strong>
+              </div>
+              <span class="stat-caption">Previous team members</span>
+            </article>
+            <article class="stat">
+              <span class="stat-icon purple" data-icon="grid"></span>
+              <div>
+                <p>Departments</p>
+                <strong id="stat-departments">â€”</strong>
+              </div>
+              <span class="stat-caption">Represented in the directory</span>
+            </article>
+          </div>
+          <p id="summary-error" class="inline-error" hidden>
+            Directory totals could not be loaded.
+          </p>
+          <section class="directory-card" aria-labelledby="all-employees-title">
+            <div class="card-heading">
+              <div>
+                <h2 id="all-employees-title">
+                  All employees <span class="count-pill" id="result-count">0</span>
+                </h2>
+                <p>Keep contact details and employment information up to date.</p>
+              </div>
+              <span class="table-hint">Made for everyday work</span>
+            </div>
+            <div class="filters">
+              <label class="search-box"
+                ><span class="sr-only">Search by name or email</span><span data-icon="search"></span
+                ><input
+                  id="search"
+                  type="search"
+                  placeholder="Search by name or email..."
+                  maxlength="120"
+                  autocomplete="off"
+              /></label>
+              <label
+                ><span class="sr-only">Filter by department</span
+                ><select id="department-filter">
+                  <option value="">All departments</option>
+                </select></label
+              >
+              <label
+                ><span class="sr-only">Filter by status</span
+                ><select id="status-filter">
+                  <option value="">All statuses</option>
+                  <option value="ACTIVE">Active</option>
+                  <option value="INACTIVE">Inactive</option>
+                </select></label
+              >
+              <label
+                ><span class="sr-only">Sort employees</span
+                ><select id="sort">
+                  <option value="fullName:asc">Name: Aâ€“Z</option>
+                  <option value="fullName:desc">Name: Zâ€“A</option>
+                  <option value="dateOfJoining:desc">Recently joined</option>
+                  <option value="dateOfJoining:asc">Earliest joined</option>
+                </select></label
+              >
+              <button class="text-button" id="clear-filters" hidden>Clear</button>
+            </div>
+            <p class="sr-only" id="list-announcement" role="status"></p>
+            <div class="table-wrap">
+              <table>
+                <caption class="sr-only">
+                  Employee records
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Employee</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Designation</th>
+                    <th scope="col">Date joined</th>
+                    <th scope="col">Status</th>
+                    <th scope="col"><span class="sr-only">Actions</span></th>
+                  </tr>
+                </thead>
+                <tbody id="employees-body"></tbody>
+              </table>
+            </div>
+            <div class="empty-state" id="list-state" hidden></div>
+            <footer class="table-footer">
+              <p id="range-label">Loading employeesâ€¦</p>
+              <div class="pagination">
+                <label
+                  >Rows per page
+                  <select id="page-size">
+                    <option>10</option>
+                    <option>5</option>
+                    <option>20</option>
+                    <option>50</option>
+                  </select></label
+                ><button class="icon-button" id="previous-page" aria-label="Previous page">
+                  <span data-icon="left"></span></button
+                ><span id="page-label">1 / 1</span
+                ><button class="icon-button" id="next-page" aria-label="Next page">
+                  <span data-icon="right"></span>
+                </button>
+              </div>
+            </footer>
+          </section>
+          <p class="page-footnote">Good teams start with the details.</p>
+        </section>
+        <section id="employee-detail" hidden aria-label="Employee details"></section>
+      </main>
+    </div>
+    <dialog id="employee-dialog" aria-labelledby="form-title">
+      <form id="employee-form">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">EMPLOYEE RECORD</p>
+            <h2 id="form-title">Add employee</h2>
+          </div>
+          <button
+            type="button"
+            class="icon-button"
+            id="close-form"
+            aria-label="Close employee form"
+          >
+            <span data-icon="close"></span>
+          </button>
+        </div>
+        <p class="form-intro">A few details to keep everyone connected. All fields are required.</p>
+        <div class="form-grid">
+          <label class="span-two"
+            ><span id="employee-label-fullName">Full name</span
+            ><input
+              aria-labelledby="employee-label-fullName"
+              name="fullName"
+              required
+              maxlength="120"
+              autocomplete="name"
+              placeholder="e.g. Aditi Sharma" /><small
+              class="field-error"
+              id="error-fullName"
+            ></small
+          ></label>
+          <label
+            ><span id="employee-label-email">Email address</span
+            ><input
+              aria-labelledby="employee-label-email"
+              name="email"
+              type="email"
+              required
+              maxlength="254"
+              autocomplete="email"
+              placeholder="aditi@example.com" /><small class="field-error" id="error-email"></small
+          ></label>
+          <label
+            ><span id="employee-label-phoneNumber">Phone number</span
+            ><input
+              aria-labelledby="employee-label-phoneNumber"
+              name="phoneNumber"
+              type="tel"
+              required
+              maxlength="32"
+              autocomplete="tel"
+              placeholder="+91 98765 43210" /><small
+              class="field-error"
+              id="error-phoneNumber"
+            ></small
+          ></label>
+          <label
+            ><span id="employee-label-department">Department</span
+            ><select aria-labelledby="employee-label-department" name="department" required>
+              <option value="">Select a department</option></select
+            ><small class="field-error" id="error-department"></small
+          ></label>
+          <label
+            ><span id="employee-label-designation">Designation</span
+            ><input
+              aria-labelledby="employee-label-designation"
+              name="designation"
+              required
+              maxlength="120"
+              placeholder="e.g. Backend Engineer" /><small
+              class="field-error"
+              id="error-designation"
+            ></small
+          ></label>
+          <label
+            ><span id="employee-label-dateOfJoining">Date of joining</span
+            ><input
+              aria-labelledby="employee-label-dateOfJoining"
+              name="dateOfJoining"
+              type="date"
+              required /><small class="field-error" id="error-dateOfJoining"></small
+          ></label>
+          <label
+            ><span id="employee-label-salary">Annual salary (INR)</span
+            ><input
+              aria-labelledby="employee-label-salary"
+              name="salary"
+              type="number"
+              min="0"
+              max="9999999999.99"
+              step="0.01"
+              required
+              placeholder="e.g. 600000" /><small class="field-error" id="error-salary"></small
+          ></label>
+          <label class="span-two"
+            ><span id="employee-label-status">Employment status</span
+            ><select aria-labelledby="employee-label-status" name="status" required>
+              <option value="ACTIVE">Active</option>
+              <option value="INACTIVE">Inactive</option></select
+            ><small class="field-error" id="error-status"></small
+          ></label>
+        </div>
+        <p class="form-error" id="form-error" role="alert" hidden></p>
+        <footer class="dialog-footer">
+          <button type="button" class="button secondary" id="cancel-form">Cancel</button
+          ><button type="submit" class="button primary" id="save-employee">Add employee</button>
+        </footer>
+      </form>
+    </dialog>
+    <dialog id="delete-dialog" aria-labelledby="delete-title" aria-describedby="delete-description">
+      <div class="delete-icon" data-icon="trash"></div>
+      <h2 id="delete-title">Delete employee?</h2>
+      <p id="delete-description"></p>
+      <p class="form-error" id="delete-error" role="alert" hidden></p>
+      <div class="dialog-footer">
+        <button class="button secondary" id="cancel-delete" autofocus>Keep employee</button
+        ><button class="button danger" id="confirm-delete">Delete employee</button>
+      </div>
+    </dialog>
+    <div id="toast" class="toast" role="status" hidden></div>
+  </body>
+</html>
