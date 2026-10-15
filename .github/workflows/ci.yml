@@ -24,3 +24,22 @@ jobs:
           cache: maven
       - name: Run unit, API and PostgreSQL tests
         run: bash mvnw -B verify -Pintegration
+  local-startup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Follow the README Docker startup command
+        run: docker compose up --build -d --wait --wait-timeout 180
+      - name: Install browser test dependencies
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Verify registration and both demo accounts
+        run: npm run test:auth
+      - name: Show startup logs on failure
+        if: failure()
+        run: docker compose logs --tail=150 app db
+      - name: Remove the temporary CI containers and data
+        if: always()
+        run: docker compose down --volumes

@@ -19,15 +19,57 @@ These are public demo credentials. Each demo account has a separate sample direc
 
 ## Run locally
 
-With Docker and Compose running:
+### Docker (recommended)
+
+Install Git and Docker with Compose v2. On Windows or macOS, start Docker Desktop and use Linux containers. `docker info` must succeed before continuing. The first build needs internet access and free ports 8080 and 5432. Java, Maven, Node.js and PostgreSQL do not need to be installed separately for this path.
+
+From a terminal:
 
 ```sh
-docker compose up --build
+git clone https://github.com/AyanAhmedKhan/assignment.git
+cd assignment
+docker compose up --build -d --wait --wait-timeout 180
 ```
 
-Open [localhost:8080](http://localhost:8080). The same demo buttons and registration page are available. Local admin credentials are `admin` / `local-admin-password-2026`; change them in `.env` if needed. Docker keeps PostgreSQL data in a named volume. Stopping the app with `docker compose down` preserves that volume.
+If you downloaded the source ZIP, extract it and open a terminal in the folder containing `compose.yaml` instead of running the first two commands. No source edits or `.env` file are required. Compose builds the app, starts PostgreSQL, waits for both services to become healthy, and creates the schema and demo accounts automatically.
 
-To run Java and PostgreSQL directly, see [local development](docs/local-development.md). The Maven Wrapper is included, so a separate Maven installation is optional.
+Open [localhost:8080](http://localhost:8080). Use either demo button or register an account. Local admin credentials are `admin` / `local-admin-password-2026`. [The health endpoint](http://localhost:8080/actuator/health) returns `{"status":"UP"}` when the app can reach the database.
+
+Useful commands, run from the same folder:
+
+```sh
+docker compose ps
+docker compose logs --tail=100 app db
+docker compose down
+```
+
+The database is stored in a named volume. `docker compose down` preserves accounts and employees; running the startup command again reuses them.
+
+If a port is occupied, copy `.env.example` to `.env` and change `APP_PORT` or `DB_PORT`, for example to 8082 and 5433, then run the startup command again and visit `http://localhost:8082`. On PowerShell use `Copy-Item .env.example .env`; on macOS/Linux use `cp .env.example .env`. These are optional configuration changes, not source edits. Changing database credentials after the volume has been initialized also requires updating the PostgreSQL role; it does not reset existing data.
+
+### Java and PostgreSQL without Docker
+
+Install JDK 17 or later, set `JAVA_HOME`, and start PostgreSQL 16 or later on port 5432. Make `psql` available on your terminal's PATH. From the project folder, create the local databases using your PostgreSQL administrator account:
+
+```sh
+psql -h localhost -U postgres -f database/setup.sql
+```
+
+Enter your PostgreSQL administrator password if prompted. Then start the application:
+
+```powershell
+# Windows PowerShell
+.\mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=local"
+```
+
+```sh
+# macOS / Linux
+sh mvnw spring-boot:run -Dspring-boot.run.profiles=local
+```
+
+The `local` profile enables login, registration and the demo accounts at [localhost:8080](http://localhost:8080), using the database credentials created by the setup script. The Maven Wrapper downloads Maven and dependencies on the first run. No source edits or extra environment variables are needed with these defaults. Stop the application with Ctrl+C.
+
+See [local development](docs/local-development.md) for custom database settings, the executable JAR and the optional open API profile.
 
 ## Project structure
 

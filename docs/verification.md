@@ -53,6 +53,12 @@ Release 1.1.1 corrects the name to **Kloudspot Assignment** in the screens, API,
 
 The Docker image was built on the Hostinger VPS using Java 17, including the 37 service/MVC tests. The running app uses PostgreSQL 18 in its own container with persistent storage and a non-superuser application role. The public HTTPS check verified the certificate, HTTP redirect, healthy database connection, login/logout, protected API, secure HTTP-only session cookies, CSRF rejection, server validation, browser create/edit/delete, authenticated OpenAPI, mobile login width and an axe scan of the login page. Temporary smoke-test records were deleted afterward. Login credentials are stored separately from the project and submission archive.
 
+## README startup verification
+
+The native README commands were run from a fresh export of the tracked source, without `.env`, generated build output or source edits. A new PostgreSQL 18 database on localhost:5432 was initialized with `database/setup.sql`, then the Maven Wrapper started the `local` profile. The health endpoint returned `UP`, and all three account browser tests passed against localhost:8080, including registration, both demo accounts and read-only permissions.
+
+The `local-startup` GitHub Actions job follows the README Docker command on a clean Linux runner, waits for app/database health checks and runs the same account browser tests. It uses Compose defaults and no `.env` file. Docker Desktop did not start on the Windows verification machine, so Docker runtime verification is performed by that CI job.
+
 ## Verification limits
 
 - The full integration suite ran on Java 24 locally and also passed on Java 17 in [GitHub Actions](https://github.com/AyanAhmedKhan/assignment/actions/runs/38745984625). The container build and deployment use Java 17.

@@ -37,6 +37,6 @@ The optional hosted smoke check is `node tests/deployment-smoke.js`. Set `DEPLOY
 
 ## Account browser checks
 
-Start the hosted profile locally on port 8081 as described in [local development](local-development.md), then run `npm run test:auth`. These tests cover signup validation, successful login to an empty directory, duplicate accounts, the two demo roles, cross-account access, and accessibility on a mobile viewport. They create test accounts in the development database.
+Start the application using either README setup path on port 8080, then run `npm run test:auth`. Set `APP_URL` if you chose another port. These tests cover signup validation, successful login to an empty directory, duplicate accounts, the two demo roles, cross-account access, and accessibility on a mobile viewport. They create test accounts in the development database.
 
 Run `npm run format:check` to check Java and frontend formatting, or `npm run format` to apply it. Node.js and the formatter are development tools; they are not needed to run the JAR.

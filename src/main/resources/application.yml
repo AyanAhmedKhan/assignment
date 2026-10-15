@@ -1,6 +1,9 @@
 spring:
   application:
     name: kloudspot-assignment
+  profiles:
+    group:
+      local: [cloud, demo, local-settings]
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/employees}
     username: ${DB_USERNAME:employee_app}
