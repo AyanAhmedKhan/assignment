@@ -163,7 +163,7 @@ async function refreshView() {
   $('#directory').hidden = Boolean(match);
   $('#employee-detail').hidden = !match;
   if (!match) {
-    document.title = 'Klodspot Assignment | Employee directory';
+    document.title = 'Kloudspot Assignment | Employee directory';
     return loadEmployees();
   }
   const detail = $('#employee-detail');
@@ -171,7 +171,7 @@ async function refreshView() {
   try {
     const employee = await employeeApi.get(match[1]);
     if (sequence !== routeSequence) return;
-    document.title = `${employee.fullName} | Klodspot Assignment`;
+    document.title = `${employee.fullName} | Kloudspot Assignment`;
     detail.innerHTML = renderEmployeeDetails(employee, canEdit);
     $('#detail-edit')?.addEventListener('click', () => employeeForm.open(employee));
     $('#detail-delete')?.addEventListener('click', () => openDelete(employee));

@@ -8,7 +8,7 @@ settings = {
     "APP_HOST": "assignment.srv957712.hstgr.cloud",
     "PROXY_NETWORK": "root_default",
     "TLS_RESOLVER": "mytlschallenge",
-    "IMAGE_TAG": "1.1.0",
+    "IMAGE_TAG": "1.1.1",
     "ADMIN_USERNAME": "admin",
     "ADMIN_PASSWORD": secrets.token_urlsafe(24),
     "DB_PASSWORD": secrets.token_hex(24),

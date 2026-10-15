@@ -49,11 +49,13 @@ The three account browser tests exercise invalid and successful signup, sign-in 
 
 Release 1.1.0 was deployed to `assignment.srv957712.hstgr.cloud`. A database backup was taken with the old app stopped before migration. All 14 existing employees were preserved under the administrator; the editor and viewer each received 14 separate fictional records. The live registration check created an empty member directory, and its temporary account was removed after verification.
 
+Release 1.1.1 corrects the name to **Kloudspot Assignment** in the screens, API, Java packages, build metadata and documentation. All 60 backend tests and 9 browser tests passed after the rename. The live smoke check and all three account browser tests also passed on HTTPS. The database retained its three existing accounts and 42 employees, and the temporary registration-check account was removed. Screenshots were refreshed with the corrected name.
+
 The Docker image was built on the Hostinger VPS using Java 17, including the 37 service/MVC tests. The running app uses PostgreSQL 18 in its own container with persistent storage and a non-superuser application role. The public HTTPS check verified the certificate, HTTP redirect, healthy database connection, login/logout, protected API, secure HTTP-only session cookies, CSRF rejection, server validation, browser create/edit/delete, authenticated OpenAPI, mobile login width and an axe scan of the login page. Temporary smoke-test records were deleted afterward. Login credentials are stored separately from the project and submission archive.
 
 ## Verification limits
 
-- The GitHub Actions workflow is provided but was not run remotely. The full integration suite used Java 24 locally; the container build and deployment used Java 17.
+- The full integration suite ran on Java 24 locally and also passed on Java 17 in [GitHub Actions](https://github.com/AyanAhmedKhan/assignment/actions/runs/38745984625). The container build and deployment use Java 17.
 - Testing used Chromium; other browser engines were not tested.
 - No load test, independent penetration test or off-site backup service was configured. Email verification, password recovery, user administration and an audit trail are outside the assignment's scope.
 

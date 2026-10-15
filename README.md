@@ -1,4 +1,4 @@
-# Klodspot Assignment
+# Kloudspot Assignment
 
 An employee directory built with Java 17, Spring Boot and PostgreSQL. It supports employee CRUD, search, filters, pagination, registration and private account directories. The frontend is plain HTML, CSS and JavaScript, served by the same Spring Boot app.
 
@@ -32,8 +32,8 @@ To run Java and PostgreSQL directly, see [local development](docs/local-developm
 ## Project structure
 
 ```text
-src/main/java/com/klodspot/assignment/
-  KlodspotAssignmentApplication.java
+src/main/java/com/kloudspot/assignment/
+  KloudspotAssignmentApplication.java
   account/       Registration, stored accounts and initial demo/admin accounts
   employee/      Controller, service, repository, entity and search filters
     dto/         API request, response and page records
@@ -76,6 +76,6 @@ The open native development profile is intended for local API testing. The hoste
 
 The second command needs a dedicated `employees_test` database. See [testing](docs/testing.md) for database settings, browser tests and formatting commands, and [verification notes](docs/verification.md) for the checks actually run.
 
-After signing in, open [Swagger UI](https://assignment.srv957712.hstgr.cloud/swagger-ui.html). The [API guide](docs/api.md), [HTTP examples](docs/api.http) and [Postman collection](docs/klodspot-assignment.postman_collection.json) document the endpoints and validation rules.
+After signing in, open [Swagger UI](https://assignment.srv957712.hstgr.cloud/swagger-ui.html). The [API guide](docs/api.md), [HTTP examples](docs/api.http) and [Postman collection](docs/kloudspot-assignment.postman_collection.json) document the endpoints and validation rules.
 
 [VPS deployment instructions](deploy/README.md) cover HTTPS, credentials, backups and updates.

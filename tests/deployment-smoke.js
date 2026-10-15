@@ -92,7 +92,7 @@ try {
   createdId = undefined;
   const docs = await context.request.get('/v3/api-docs');
   expect(docs.status()).toBe(200);
-  expect((await docs.json()).info.title).toBe('Klodspot Assignment API');
+  expect((await docs.json()).info.title).toBe('Kloudspot Assignment API');
   await page.locator('#sign-out').click();
   await expect(page).toHaveURL(/\/login\.html\?logout$/);
   expect((await context.request.get('/api/employees')).status()).toBe(401);

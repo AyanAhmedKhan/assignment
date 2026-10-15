@@ -1,6 +1,6 @@
 {
-  "name": "klodspot-assignment-browser-tests",
-  "version": "1.1.0",
+  "name": "kloudspot-assignment-browser-tests",
+  "version": "1.1.1",
   "private": true,
   "type": "module",
   "scripts": {

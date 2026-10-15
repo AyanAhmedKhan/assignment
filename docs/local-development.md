@@ -52,7 +52,7 @@ To build a runnable JAR:
 
 ```sh
 sh mvnw clean verify
-java -jar target/klodspot-assignment-1.1.0.jar
+java -jar target/kloudspot-assignment-1.1.1.jar
 ```
 
 Use `.\mvnw.cmd clean verify` on Windows.
@@ -71,7 +71,7 @@ $env:PGUSER = 'employee_app'
 $env:PGPASSWORD = 'employee_local_dev'
 $env:ADMIN_USERNAME = 'admin'
 $env:ADMIN_PASSWORD = 'local-admin-password-2026'
-java -jar target/klodspot-assignment-1.1.0.jar --spring.profiles.active=cloud,demo --server.address=127.0.0.1 --server.port=8081 --server.servlet.session.cookie.secure=false
+java -jar target/kloudspot-assignment-1.1.1.jar --spring.profiles.active=cloud,demo --server.address=127.0.0.1 --server.port=8081 --server.servlet.session.cookie.secure=false
 ```
 
 Keep the insecure-cookie override limited to loopback development. Use `deploy/compose.yaml` on the VPS.

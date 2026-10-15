@@ -80,4 +80,4 @@ Example validation response (the `instance` path may also be present):
 }
 ```
 
-See [sample API requests](api.http), [a sample employee payload](sample-employee.json), or import [the Postman collection](klodspot-assignment.postman_collection.json). The collection saves the created employee's ID so the get, update and delete requests can be run in order. These examples target the open local profile. On the hosted app, sign in first; Swagger uses the session and CSRF cookie for authenticated requests.
+See [sample API requests](api.http), [a sample employee payload](sample-employee.json), or import [the Postman collection](kloudspot-assignment.postman_collection.json). The collection saves the created employee's ID so the get, update and delete requests can be run in order. These examples target the open local profile. On the hosted app, sign in first; Swagger uses the session and CSRF cookie for authenticated requests.

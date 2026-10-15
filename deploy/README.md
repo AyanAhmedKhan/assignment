@@ -2,6 +2,8 @@
 
 This deployment uses the VPS's existing Traefik proxy. It does not replace its configuration or bind additional public ports. The application joins `root_default`; PostgreSQL is available only on the private project network. Change `APP_HOST`, `PROXY_NETWORK` and `TLS_RESOLVER` if deploying on another server.
 
+The application and image are named **Kloudspot Assignment** / `kloudspot-assignment`. The existing Compose project, database role, volume, proxy labels and server directory retain their original identifiers so upgrades continue to use the same stored data. The public demo credentials also stay stable across the branding correction.
+
 ## First deployment
 
 Copy the source to `/opt/klodspot-assignment` and run from that directory:
@@ -50,6 +52,8 @@ Keep an encrypted copy off the VPS and verify restoration into a separate empty 
 For releases, set a new `IMAGE_TAG` in `deploy/.env`, build, and run `up -d --wait` as above. Retain the previous image. To roll back an application-only release, set the previous tag and run `up -d --no-build --wait`. Review database migration compatibility before rolling back; a container rollback does not undo database migrations.
 
 Version 1.1.0 introduces account ownership. Do not run a pre-account image against this database after users register: old code does not filter by account. Recover from the pre-upgrade backup into a separate database, or fix forward using code that preserves ownership checks.
+
+Version 1.1.1 corrects the branding and changes the image repository to `kloudspot-assignment`; it has no database migration. To return to 1.1.0, restore that release's Compose file as well as its image tag, because it uses the previous image repository.
 
 To rotate the login password, update `ADMIN_PASSWORD` in the private environment file and run `up -d`. This restarts the app and invalidates current sessions. Database password rotation also requires changing the PostgreSQL role password; changing an environment variable alone does not update an initialized database.
 

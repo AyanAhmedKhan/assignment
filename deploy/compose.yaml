@@ -25,7 +25,7 @@ services:
         max-size: 10m
         max-file: '3'
   app:
-    image: klodspot-assignment:${IMAGE_TAG:?Set IMAGE_TAG in deploy/.env}
+    image: kloudspot-assignment:${IMAGE_TAG:?Set IMAGE_TAG in deploy/.env}
     build:
       context: ..
       dockerfile: Dockerfile
